@@ -24,6 +24,8 @@ apis:
       - type: Documentation
         url: https://docs.shoreline.io
 common:
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/shoreline-software
   - type: Website
     url: https://shoreline.io
   - type: Documentation
