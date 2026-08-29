@@ -1,0 +1,61 @@
+specification: API Commons Authentication
+specificationVersion: '0.1'
+provider: Shoreline
+providerId: shoreline
+generated: '2026-08-29'
+modified: '2026-08-29'
+method: searched
+source: https://github.com/NVIDIA/terraform-provider-shoreline/blob/main/docs/index.md
+docs: https://registry.terraform.io/providers/shorelinesoftware/shoreline/latest/docs
+description: >-
+  Authentication profile for the Shoreline cluster API, read from the only first-party
+  documentation that is still published: the Shoreline Terraform provider docs in the archived
+  source repository. Shoreline's own docs host (docs.shoreline.io) no longer resolves, and there
+  is no OpenAPI to derive securitySchemes from, so this profile is documentation-sourced rather
+  than spec-derived.
+api_host:
+  form: customer-specific
+  template: '<CLUSTER_API_ENDPOINT>'
+  note: >-
+    There is no single public API host. The provider's `url` argument is documented as
+    "Customer-specific URL for the Shoreline API server" — each customer's Shoreline cluster
+    exposes its own backend endpoint. This is why apis.yml carries no baseURL: the correct value
+    is templated per tenant, not omitted by oversight.
+schemes:
+  - id: bearer_token
+    type: http
+    scheme: bearer
+    in: header
+    name: Authorization
+    description: >-
+      Customer/user-specific authorization token for the Shoreline API server. Documented as the
+      provider's `token` argument, marked Sensitive.
+    credential_delivery:
+      preferred: environment variable
+      env_var: SHORELINE_TOKEN
+      note: >-
+        Provider docs state the token should be supplied via the SHORELINE_TOKEN environment
+        variable, which is read during Configure and bypasses Terraform state and plan output;
+        they explicitly warn against hardcoding it in a provider block or a .tfvars file.
+oauth2: false
+openid_connect: false
+mutual_tls: unknown
+api_keys: false
+scopes:
+  published: false
+  note: >-
+    No OAuth scope surface. The documented model is a single bearer token per customer/user, so
+    scopes/ is intentionally absent (the pipeline skips scopes/ for key- and token-auth providers).
+authorization_model:
+  note: >-
+    The provider exposes a `shoreline_principal` resource (identity + name) and an
+    `allowed_entities` attribute on actions, notebooks and runbooks, indicating a
+    principal/entity-based authorization model on the backend. The reference for it was on
+    docs.shoreline.io and is no longer reachable, so no further detail is asserted here.
+caveat: >-
+  Shoreline was acquired by NVIDIA in July 2024 and the source repository this documentation
+  lives in was archived in August 2026. Treat this profile as a historical record of a
+  decommissioned product, not as live integration guidance.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

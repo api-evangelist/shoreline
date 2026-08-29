@@ -1,0 +1,77 @@
+specification: API Commons Lifecycle
+specificationVersion: '0.1'
+provider: Shoreline
+providerId: shoreline
+generated: '2026-08-29'
+modified: '2026-08-29'
+method: searched
+source: >-
+  https://www.shoreline.io/ (301), https://github.com/NVIDIA/terraform-provider-shoreline,
+  https://registry.terraform.io/v1/providers/shorelinesoftware/shoreline,
+  https://siliconangle.com/2024/06/19/nvidia-reportedly-acquires-incident-automation-startup-shoreline-100m/
+description: >-
+  Lifecycle record for Shoreline Software Inc. This is an END-OF-LIFE record, not a versioning
+  policy: Shoreline was acquired by NVIDIA and its independent developer surface has been fully
+  decommissioned. No versioning policy, deprecation policy, Sunset/Deprecation header practice,
+  SLA or status page is published anywhere, because there is no longer a public product to
+  publish them for.
+status: absorbed
+current_version: null
+versioning:
+  scheme: null
+  policy_url: null
+  note: No versioning policy is published; the documentation host no longer resolves.
+deprecation:
+  policy_url: null
+  sunset_header: unknown
+  deprecation_header: unknown
+  note: >-
+    No deprecation policy, and no RFC 8594 Sunset/Deprecation header practice can be observed —
+    there is no reachable API endpoint to observe. No `Deprecation` pointer is wired in apis.yml.
+status_page:
+  url: null
+  note: >-
+    status.shoreline.io has no DNS record. No `StatusPage` pointer is wired in apis.yml.
+sla:
+  url: null
+  note: Not published.
+timeline:
+  - date: '2019'
+    event: >-
+      Shoreline Inc. founded (incident automation / auto-remediation for cloud operations),
+      raising roughly $57M across three rounds including a $35M round in March 2022.
+    source: https://siliconangle.com/2024/06/19/nvidia-reportedly-acquires-incident-automation-startup-shoreline-100m/
+  - date: '2021-06-14'
+    event: Terraform provider source repository created (terraform-provider-shoreline).
+    source: https://api.github.com/repos/NVIDIA/terraform-provider-shoreline
+  - date: '2024-07'
+    event: >-
+      Acquired by NVIDIA in a deal reported at approximately $100M. The company's LinkedIn page
+      is now titled "Shoreline.io (Acquired by NVIDIA)".
+    source: https://siliconangle.com/2024/06/19/nvidia-reportedly-acquires-incident-automation-startup-shoreline-100m/
+  - date: '2025-04-22'
+    event: Last Terraform provider release, v1.15.38, published to the Terraform Registry.
+    source: https://registry.terraform.io/v1/providers/shorelinesoftware/shoreline
+  - date: '2026-08-05'
+    event: >-
+      Final push to the source repository, now at github.com/NVIDIA/terraform-provider-shoreline;
+      the repository is ARCHIVED (read-only). github.com/shorelinesoftware 301s to github.com/NVIDIA
+      for this repo and the org page itself returns 404.
+    source: https://api.github.com/repos/NVIDIA/terraform-provider-shoreline
+  - date: '2026-08-29'
+    event: >-
+      Probed for this record. shoreline.io and docs.shoreline.io have no DNS A record;
+      www.shoreline.io returns HTTP 301 to https://www.nvidia.com/en-us/ for every path.
+    source: https://www.shoreline.io/
+end_of_life:
+  product_surface: gone
+  website: 301 to https://www.nvidia.com/en-us/
+  documentation: docs.shoreline.io — no DNS
+  api: No reachable public endpoint; the API server was always customer-cluster-specific.
+  remaining_first_party_artifacts:
+    - https://registry.terraform.io/providers/shorelinesoftware/shoreline (provider still downloadable, unmaintained)
+    - https://github.com/NVIDIA/terraform-provider-shoreline (archived, Apache-2.0)
+    - https://www.linkedin.com/company/shoreline-software (HTTP 200, retitled "Acquired by NVIDIA")
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

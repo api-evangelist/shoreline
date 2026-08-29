@@ -1,0 +1,183 @@
+specification: API Commons Data Model
+specificationVersion: '0.1'
+provider: Shoreline
+providerId: shoreline
+generated: '2026-08-29'
+modified: '2026-08-29'
+method: derived
+source: data-model/shoreline-terraform-provider-schema.json
+source_url: https://raw.githubusercontent.com/NVIDIA/terraform-provider-shoreline/main/provider_schema.json
+description: >-
+  Entity model of the Shoreline auto-remediation platform, derived from the first-party Terraform
+  provider schema (provider_schema.json, saved verbatim alongside this file). Shoreline publishes
+  no OpenAPI and its documentation host no longer resolves, so the provider schema is the only
+  machine-readable description of its objects that still exists. Every entity and every attribute
+  count below is read straight from that file; nothing is inferred beyond the relationships noted,
+  each of which cites the attribute that carries it.
+caveat: >-
+  A Terraform provider schema describes the objects the provider manages, not HTTP operations. It
+  yields entities and their fields faithfully; it does not yield paths, methods, status codes or
+  request/response envelopes, and none are asserted here.
+entity_count: 15
+entities:
+  - name: action
+    resource: shoreline_action
+    attributes: 25
+    required: [name, command]
+    description: A command executed on matched resources — the "what to do" half of a remediation loop.
+  - name: alarm
+    resource: shoreline_alarm
+    attributes: 20
+    required: [name, fire_query]
+    description: A metric condition (fire_query / clear_query) that detects an issue — the "when" half.
+  - name: bot
+    resource: shoreline_bot
+    attributes: 13
+    required: [name, command]
+    description: >-
+      Binds an alarm to an action ("if <alarm> then <action> fi"), forming the closed remediation loop.
+  - name: runbook
+    resource: shoreline_runbook
+    attributes: 29
+    required: []
+    description: Multi-cell executable procedure with parameters, approvals and notification settings.
+  - name: notebook
+    resource: shoreline_notebook
+    attributes: 29
+    required: []
+    description: >-
+      Interactive cell-based document with the same shape as a runbook (identical attribute set).
+  - name: resource
+    resource: shoreline_resource
+    attributes: 4
+    required: [name, value]
+    description: A named resource-query definition selecting hosts/pods/containers to operate on.
+  - name: file
+    resource: shoreline_file
+    attributes: 13
+    required: [name, destination_path, resource_query]
+    description: File distributed to matched resources, with checksum/md5 and mode/owner.
+  - name: integration
+    resource: shoreline_integration
+    attributes: 30
+    required: [name, service_name, serial_number]
+    description: >-
+      Outbound/inbound connection to an external service (SMTP, vault, IdP, monitoring), carrying
+      its credentials and rate-limit settings.
+  - name: nvault_secret
+    resource: shoreline_nvault_secret
+    attributes: 4
+    required: [name, integration_name, vault_secret_path, vault_secret_key]
+    description: Reference to a secret held in an external vault reached through an integration.
+  - name: smtp_subscription
+    resource: shoreline_smtp_subscription
+    attributes: 6
+    required: [name, integration_name, filters, recipients]
+    description: Email notification subscription bound to an SMTP integration.
+  - name: principal
+    resource: shoreline_principal
+    attributes: 8
+    required: [name, identity]
+    description: >-
+      Authorization subject with view/execute/action limits and administer/configure permissions.
+  - name: time_trigger
+    resource: shoreline_time_trigger
+    attributes: 5
+    required: [name, fire_query]
+    description: Schedule-based trigger with start/end dates, an alternative firing source to an alarm.
+  - name: dashboard
+    resource: shoreline_dashboard
+    attributes: 11
+    required: [name, dashboard_type]
+    description: Grouped visualization over resource queries and tag values.
+  - name: report_template
+    resource: shoreline_report_template
+    attributes: 7
+    required: [name]
+    description: Block/link template used to render reports.
+  - name: system_settings
+    resource: shoreline_system_settings
+    attributes: 24
+    required: [name]
+    description: >-
+      Tenant-wide configuration singleton — approval workflow, audit export, maintenance mode,
+      managed secrets, tag allow/skip lists.
+relationships:
+  - from: bot
+    to: alarm
+    type: belongs_to
+    via: command
+    evidence: >-
+      Documented example — command = "if ${shoreline_alarm.high_cpu_alarm.name} then
+      ${shoreline_action.background_jobs_action.name} fi" (docs/index.md).
+    confidence: high
+  - from: bot
+    to: action
+    type: belongs_to
+    via: command
+    evidence: Same documented example as above.
+    confidence: high
+  - from: bot
+    to: integration
+    type: belongs_to
+    via: integration_name
+    confidence: high
+  - from: nvault_secret
+    to: integration
+    type: belongs_to
+    via: integration_name
+    confidence: high
+  - from: smtp_subscription
+    to: integration
+    type: belongs_to
+    via: integration_name
+    confidence: high
+  - from: action
+    to: resource
+    type: has_many
+    via: resource_query
+    evidence: resource_query / allowed_resources_query select the resources an action runs on.
+    confidence: high
+  - from: alarm
+    to: resource
+    type: has_many
+    via: resource_query
+    confidence: high
+  - from: file
+    to: resource
+    type: has_many
+    via: resource_query
+    confidence: high
+  - from: dashboard
+    to: resource
+    type: has_many
+    via: resource_query
+    confidence: medium
+  - from: action
+    to: file
+    type: has_many
+    via: file_deps
+    confidence: high
+  - from: runbook
+    to: principal
+    type: has_many
+    via: allowed_entities / approvers / editors
+    confidence: medium
+  - from: notebook
+    to: principal
+    type: has_many
+    via: allowed_entities / approvers / editors
+    confidence: medium
+  - from: action
+    to: principal
+    type: has_many
+    via: allowed_entities / editors
+    confidence: medium
+id_conventions:
+  note: >-
+    Objects are addressed by `name` (a user-chosen string), not by an opaque prefixed id. Only
+    shoreline_smtp_subscription exposes a computed `id`; bot additionally carries `monitor_id`
+    and `trigger_id` referencing backend-side objects the provider does not model.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

@@ -1,0 +1,63 @@
+specification: API Commons Packages
+specificationVersion: '0.1'
+provider: Shoreline
+providerId: shoreline
+generated: '2026-08-29'
+modified: '2026-08-29'
+method: searched
+source: >-
+  https://registry.terraform.io/v1/providers/shorelinesoftware/shoreline and
+  https://github.com/NVIDIA/terraform-provider-shoreline
+description: >-
+  First-party distributable packages published by Shoreline Software Inc. Registry sweep on
+  2026-08-29 covered npm, PyPI, RubyGems, crates.io, NuGet, Maven Central, pkg.go.dev and the
+  Terraform Registry. Exactly ONE first-party package exists: the Shoreline Terraform provider.
+  No language SDK (JavaScript, Python, Go, Java, Ruby, .NET) was found on any registry, and the
+  company's own docs host (docs.shoreline.io) no longer resolves, so no SDK page can be read.
+notes:
+  - >-
+    NOT SHORELINE: the npm scope @vtex/shoreline-* (@vtex/shoreline, @vtex/shoreline-css,
+    @vtex/shoreline-cli, ...) is VTEX's design system, published from github.com/vtex/shoreline.
+    The PyPI package `shoreline` is "NATURESCAPES shoreline analysis". Neither belongs to
+    Shoreline Software Inc. and neither is recorded below.
+  - >-
+    No `SDKs` pointer is wired in apis.yml. The single first-party package is an
+    infrastructure-as-code plugin, not a language client library, and crediting it as an SDK
+    would overstate a developer surface Shoreline never shipped publicly.
+packages:
+  - name: shorelinesoftware/shoreline
+    official: true
+    language: HCL / Go
+    kind: terraform-provider
+    registry: terraform
+    registry_url: https://registry.terraform.io/providers/shorelinesoftware/shoreline
+    source: https://github.com/NVIDIA/terraform-provider-shoreline
+    license: Apache-2.0
+    version: 1.15.38
+    published: '2025-04-22'
+    version_count: 94
+    downloads: 584303
+    tier: partner
+    description: >-
+      Terraform / OpenTofu provider that manages Shoreline auto-remediation objects — alarms,
+      actions, bots, runbooks, notebooks, files, dashboards, integrations, principals and
+      time triggers — against a customer's Shoreline cluster API endpoint.
+    first_party_evidence: >-
+      Release artifacts on the Terraform Registry are GPG-signed by key 9570BCEBCB747EE0,
+      identity "Shoreline Software Inc. <terraform@shoreline.io>".
+    currency:
+      last_release: '2025-04-22'
+      repository_archived: true
+      repository_archived_observed: '2026-08-29'
+      repository_last_push: '2026-08-05'
+      note: >-
+        The source repository was transferred from github.com/shorelinesoftware to
+        github.com/NVIDIA after the 2024 acquisition (github.com/shorelinesoftware 301s to
+        github.com/NVIDIA for this repo; the shorelinesoftware org page itself is 404) and is
+        now ARCHIVED and read-only. The last published provider release is 1.15.38 from
+        2025-04-22 — more than sixteen months before this probe. Release binaries still
+        download (HTTP 200), so `terraform init` continues to work, but the package is no
+        longer maintained.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

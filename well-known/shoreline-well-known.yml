@@ -1,0 +1,114 @@
+specification: API Commons Well-Known
+specificationVersion: '0.1'
+provider: Shoreline
+providerId: shoreline
+generated: '2026-08-29'
+modified: '2026-08-29'
+method: probed
+source: live HTTP probes of every Shoreline host named in apis.yml
+description: >-
+  Probe of the /.well-known/ surface on every Shoreline host. NOTHING IS SERVED. The apex
+  shoreline.io and the documentation host docs.shoreline.io have no DNS A record at all, so no
+  request can be made. The only host that resolves, www.shoreline.io, answers HTTP 301 to
+  https://www.nvidia.com/en-us/ for EVERY path, including all /.well-known/* paths — a
+  blanket acquisition redirect, not a document. No WellKnown or SecurityTxt pointer is wired in
+  apis.yml, because nothing here is a hit.
+hosts:
+  - host: shoreline.io
+    resolves: false
+    note: No A record (dig +short returns empty); curl returns 000, no connection made.
+    documents:
+      - path: /.well-known/security.txt
+        status: 0
+        file: null
+        note: '<no response> — host does not resolve'
+      - path: /.well-known/openid-configuration
+        status: 0
+        file: null
+        note: '<no response> — host does not resolve'
+      - path: /.well-known/oauth-authorization-server
+        status: 0
+        file: null
+        note: '<no response> — host does not resolve'
+      - path: /.well-known/api-catalog
+        status: 0
+        file: null
+        note: '<no response> — host does not resolve'
+      - path: /.well-known/ai-plugin.json
+        status: 0
+        file: null
+        note: '<no response> — host does not resolve'
+  - host: www.shoreline.io
+    resolves: true
+    note: >-
+      Resolves to apex-domain-nlb-610ce55e8d445742.elb.us-east-1.amazonaws.com. Every path
+      returns 301 to https://www.nvidia.com/en-us/. Redirect deliberately NOT followed — a
+      document served by nvidia.com belongs to NVIDIA, not to Shoreline.
+    documents:
+      - path: /.well-known/security.txt
+        status: 301
+        file: null
+        note: redirect to https://www.nvidia.com/en-us/
+      - path: /.well-known/openid-configuration
+        status: 301
+        file: null
+        note: redirect to https://www.nvidia.com/en-us/
+      - path: /.well-known/oauth-authorization-server
+        status: 301
+        file: null
+        note: redirect to https://www.nvidia.com/en-us/
+      - path: /.well-known/api-catalog
+        status: 301
+        file: null
+        note: redirect to https://www.nvidia.com/en-us/
+      - path: /.well-known/ai-plugin.json
+        status: 301
+        file: null
+        note: redirect to https://www.nvidia.com/en-us/
+      - path: /.well-known/agent-card.json
+        status: 301
+        file: null
+        note: redirect to https://www.nvidia.com/en-us/ — no A2A agent card
+      - path: /.well-known/agent.json
+        status: 301
+        file: null
+        note: redirect to https://www.nvidia.com/en-us/ — no legacy A2A agent card
+  - host: docs.shoreline.io
+    resolves: false
+    note: >-
+      No A record. The documentation host referenced by the previous apis.yml Documentation
+      pointer has been decommissioned.
+    documents:
+      - path: /.well-known/security.txt
+        status: 0
+        file: null
+        note: '<no response> — host does not resolve'
+      - path: /.well-known/api-catalog
+        status: 0
+        file: null
+        note: '<no response> — host does not resolve'
+contract_discovery:
+  note: >-
+    STEP 0b contract discovery ran against every host and found nothing. Recorded here because
+    no openapi/, graphql/, mcp/ or a2a/ artifact could be written.
+  probes:
+    - url: https://www.shoreline.io/openapi.json
+      status: 301
+    - url: https://www.shoreline.io/swagger.json
+      status: 301
+    - url: https://www.shoreline.io/llms.txt
+      status: 301
+    - url: https://www.shoreline.io/docs
+      status: 301
+    - url: https://docs.shoreline.io/
+      status: 0
+    - url: https://shoreline.io/
+      status: 0
+  result: >-
+    No OpenAPI, Swagger, GraphQL, AsyncAPI, WSDL, protobuf, MCP or A2A surface is reachable on
+    any Shoreline-controlled host. The only machine-readable first-party contract that still
+    exists anywhere is the Terraform provider schema in the archived source repository
+    (data-model/shoreline-terraform-provider-schema.json).
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

@@ -1,7 +1,15 @@
 aid: shoreline
 name: Shoreline
 description: >-
-  Shoreline is an incident automation platform that enables operators to build automated remediation for recurring incidents.
+  Shoreline Software Inc. built an incident-automation platform for cloud operations, letting SRE
+  and platform teams close the loop between detection and repair: an alarm defines when there is
+  an issue, an action defines the command that fixes it, and a bot binds the two into an
+  auto-remediation loop that runs without a human. The platform also shipped runbooks, notebooks,
+  resource queries, file distribution and an Op query language, driven from a UI, a CLI, notebooks
+  or Terraform. NVIDIA acquired Shoreline in July 2024 and the independent product surface has since
+  been decommissioned — shoreline.io and docs.shoreline.io no longer resolve, and www.shoreline.io
+  redirects in full to nvidia.com. The only first-party developer artifact still published is the
+  Terraform provider, now archived.
 type: Index
 deliveryModel:
   model: unknown
@@ -15,46 +23,134 @@ deliveryModel:
   generated: '2026-08-28'
   method: derived
 accessModel:
-  pricing: freemium
+  pricing: unknown
   onboarding: unknown
   trial: false
   try_now: false
   public: false
-  label: Freemium
-  confidence: medium
+  label: No pricing published — company absorbed into NVIDIA, website redirects
+  confidence: high
   source:
   - plans
-  generated: '2026-07-22'
-  method: derived
+  generated: '2026-08-29'
+  method: searched
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/shoreline.png
 tags:
   - AIOps
   - Automation
+  - Incident Response
+  - Site Reliability Engineering
+  - Cloud Operations
+  - Remediation
+  - Observability
+  - Terraform
 url: >-
   https://raw.githubusercontent.com/api-evangelist/shoreline/refs/heads/main/apis.yml
 created: '2026-03-27'
-modified: '2026-03-27'
+modified: '2026-08-29'
 specificationVersion: '0.23'
+x-status: defunct
+x-status-detail: Acquired by NVIDIA; shoreline.io no longer resolves at the apex and
+  www.shoreline.io redirects to nvidia.com. No Website is registered on purpose — pointing
+  at the acquirer would make the rating read NVIDIA's page as this company's surface.
 apis:
   - aid: shoreline:shoreline
     name: Shoreline
     description: >-
-      Shoreline is an incident automation platform that enables operators to build automated remediation for recurring incidents.
-    humanURL: https://shoreline.io
+      The Shoreline cluster API — the backend that alarms, actions, bots, runbooks, notebooks,
+      resources, files, integrations and principals are managed against. The endpoint was always
+      customer-specific (the Terraform provider documents it as <CLUSTER_API_ENDPOINT>), so there
+      is no single public base URL, and no OpenAPI was ever published. No endpoint is reachable
+      today.
+    humanURL: https://www.linkedin.com/company/shoreline-software
+    baseURL: ''
+    baseURLNote: >-
+      Intentionally empty. The Shoreline API server URL is per-customer-cluster, documented as the
+      `url` argument of the Terraform provider ("Customer-specific URL for the Shoreline API
+      server"). No public host exists to record, and none may be guessed from the domain.
     tags:
       - AIOps
+      - Incident Response
     properties:
-      - type: Documentation
-        url: https://docs.shoreline.io
+      - type: Authentication
+        url: authentication/shoreline-authentication.yml
+      - type: DataModel
+        url: data-model/shoreline-data-model.yml
 common:
   - type: DomainSecurity
     url: security/shoreline-domain-security.yml
+  - type: Lifecycle
+    url: lifecycle/shoreline-lifecycle.yml
+  - type: Packages
+    url: packages/shoreline-packages.yml
+  - type: LLMsTxt
+    url: llms/shoreline-llms.txt
   - type: LinkedIn
     url: https://www.linkedin.com/company/shoreline-software
-  - type: Website
-    url: https://shoreline.io
-  - type: Documentation
-    url: https://docs.shoreline.io
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
+x-pointer-liveness:
+  checked: '2026-08-29'
+  note: >-
+    Every pointer that was in this file on 2026-08-29 was fetched. Two were confirmed dead and
+    REMOVED rather than left to rot as claims we make on Shoreline's behalf.
+  removed:
+    - type: Website
+      url: https://shoreline.io
+      status: 0
+      reason: >-
+        No DNS A record on the apex. Not replaced with https://www.shoreline.io/, which resolves
+        but 301s in full to https://www.nvidia.com/en-us/ — that is the acquirer's site, not
+        Shoreline's.
+    - type: Documentation
+      url: https://docs.shoreline.io
+      status: 0
+      reason: >-
+        No DNS A record. The documentation host has been decommissioned. Was present twice, in
+        common[] and in apis[0].properties[].
+  verified:
+    - url: https://www.linkedin.com/company/shoreline-software
+      status: 200
+      note: Live; page is retitled "Shoreline.io (Acquired by NVIDIA)".
+x-corrections:
+  - date: '2026-08-29'
+    what: Removed 10 contaminated blog posts from blogs/
+    detail: >-
+      Every post in blogs/ had been pulled from https://www.shoreline.com/feed/ — Shoreline
+      Partners, a Montana M&A advisory firm — not from Shoreline Software Inc. (shoreline.io).
+      The frontmatter of each file names that feed. They attributed a business-brokerage content
+      history to an incident-automation company, so they were deleted rather than left in place.
+      No Blog pointer existed in apis.yml, and none is added: Shoreline.io's blog host no longer
+      resolves.
+x-enrichment:
+  date: '2026-08-29'
+  status: minimal
+  artifacts_added: 7
+  pass: local-v1
+x-coverage:
+  state: none
+  reason: defunct
+  detail: >-
+    Shoreline was acquired by NVIDIA in July 2024; shoreline.io and docs.shoreline.io no longer
+    have DNS records at all and www.shoreline.io answers HTTP 301 to https://www.nvidia.com/en-us/
+    for every path including /pricing, /docs and every /.well-known/ probe, so the entire
+    developer surface is gone rather than hidden.
+  evidence:
+    - url: https://shoreline.io/
+      status: 0
+    - url: https://docs.shoreline.io/
+      status: 0
+    - url: https://www.shoreline.io/
+      status: 301
+    - url: https://www.shoreline.io/.well-known/api-catalog
+      status: 301
+    - url: https://www.shoreline.io/pricing
+      status: 301
+    - url: https://github.com/shorelinesoftware
+      status: 404
+    - url: https://api.github.com/repos/NVIDIA/terraform-provider-shoreline
+      status: 200
+  checked: '2026-08-29'
+x-parent: nvidia
+x-relationship: acquisition
